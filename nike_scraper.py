@@ -42,19 +42,21 @@ if elements:
 # Export to Excel
 if products:
     df = pd.DataFrame(products)
-    df.to_excel(f"nike_{search}_results.xlsx", index=False)
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    df.to_excel(f"nike_{search}_{timestamp}_results.xlsx", index=False)
+    
     print(f"\n✅ Results exported to: nike_{search}_{timestamp}results.xlsx")
 else:
     print("❌ No products found.")
     
     # Create empty Excel file
     df = pd.DataFrame(columns=["Search Term", "Status", "Timestamp"])
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     df = pd.concat([df, pd.DataFrame([{
         "Search Term": search,
         "Status": "No products found",
         "Timestamp": pd.Timestamp.now()
     }])], ignore_index=True)
-    df.to_excel(f"nike_{search}_no_results.xlsx", index=False)
+    df.to_excel(f"nike_{search}_no_{timestamp}_results.xlsx", index=False)
 
 sb.driver.stop()

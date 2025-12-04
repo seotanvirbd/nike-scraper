@@ -1,0 +1,41 @@
+name: Run Nike Scraper
+
+on:
+  workflow_dispatch:  # Only runs when you manually click "Run workflow"
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest  # Uses GitHub's free Linux machine
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        
+    - name: Install Chrome
+      run: |
+        sudo apt-get update
+        wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo apt-get install -y ./google-chrome-stable_current_amd64.deb
+        google-chrome --version
+        
+    - name: Install dependencies
+      run: |
+        pip install seleniumbase pandas openpyxl
+        
+    - name: Run Nike scraper
+      run: |
+        python nike_scraper.py  # Make sure this matches your Python file name
+        
+    - name: Upload results
+      uses: actions/upload-artifact@v4
+      with:
+        name: nike-scraper-results
+        path: |
+          *.xlsx
+          *.csv
+        retention-days: 7

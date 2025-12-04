@@ -1,5 +1,6 @@
 import pandas as pd
 from seleniumbase import sb_cdp
+import datetime
 
 url = "https://www.nike.com/"
 sb = sb_cdp.Chrome(url)
@@ -42,7 +43,8 @@ if elements:
 if products:
     df = pd.DataFrame(products)
     df.to_excel(f"nike_{search}_results.xlsx", index=False)
-    print(f"\n✅ Results exported to: nike_{search}_results.xlsx")
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    print(f"\n✅ Results exported to: nike_{search}_{timestamp}results.xlsx")
 else:
     print("❌ No products found.")
     
